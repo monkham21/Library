@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Library</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="library.css">
+    <script src="library.js"></script>
+</head>
+<body>
+    <div class="new-book" style="padding-left: 3rem; padding-top: 3rem;">
+        <button id="new-book-button">NEW BOOK</button>
+    </div>
+    <div class="add-book-form" style="display: none;">
+        <h2 id="form-title">Add a New Book</h2>
+        <div>
+            <button id="close-form" onclick="closeForm();"> x </button>
+        </div>
+        <form class="add-book-form" id="add-form" action="" method="post">
+            <div class="label"><label for="title">Book Title: </label></div>
+            <input type="text" id="title" name="title" required><br>
+
+            <div class="label"><label for="author">Author: </label></div>
+            <input type="text" id="author" required><br>
+
+            <div class="label"><label for="pages">Number of Pages: </label></div>
+            <input type="text" id="pages" required><br>
+
+            <fieldset>
+                <input type="radio" class="status" name="status" id="read" value="read" required>
+                <label for="read">Finished Reading</label>
+
+                <input type="radio" class="status" name="status" id="unread" value="unread" required>
+                <label for="read">Haven't Read</label><br>
+            </fieldset>
+
+            <input type="submit" id="submit" value="Submit">
+        </form>
+    </div>
+
+    <div class="display" style="padding: 3rem;"></div>
+</body>
+</html>
