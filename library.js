@@ -1,9 +1,7 @@
 let myLibrary = [];
 
-
 // the book constructor
-function Book(id, title, author, pages, status) {
-
+function Book(title, author, pages, status) {
     this.title = title
     this.author = author
     this.pages = pages
@@ -44,18 +42,48 @@ function addBookToLibrary() {
     cardBody.appendChild(title);
 
     let content = document.createElement('p');
-    content.innerHTML = book.author + ', ' + book.pages + ' pages\n[' + book.status + ']';
+    content.innerHTML = book.author + ', ' + book.pages + ' pages';
     cardBody.appendChild(content);
+
+    // status button
+    let statusButton = document.createElement('button');
+    statusButton.setAttribute('type', 'button');
+    statusButton.setAttribute('class', 'status-button');
+    statusButton.setAttribute('id', myLibrary.indexOf(book));
+    statusButton.innerHTML = book.status;
+    if (book.status == "unread") {
+       statusButton.style.backgroundColor = "gray";
+    } else {
+        statusButton.style.backgroundColor = "green";
+    }
+    cardBody.appendChild(statusButton);
 
     // delete button
     let del = document.createElement('button');
     del.setAttribute('type', 'button');
     del.setAttribute('class', 'del-book');
+    del.setAttribute('id', myLibrary.indexOf(book)); // associate DOM element with array id
     del.innerHTML = "Remove";
     cardBody.appendChild(del);
 
     // add to card
     card.appendChild(cardBody);
+
+    // read status function
+    document.querySelectorAll(".status-button").forEach(book => readStatus(book));
+
+    // delete book function
+    document.querySelectorAll(".del-book").forEach(book => deleteBook(book));
+}
+
+
+// delete book function
+function deleteBook(book) {
+    const id = parseInt(book.id);
+    book.onclick = function() {
+        delete myLibrary[id];
+        document.getElementById(id).remove();
+    }
 }
 
 
@@ -72,7 +100,25 @@ function closeForm() {
     document.querySelector(".add-book-form").style.display = "none";
     document.querySelector(".new-book").style.display = "block";
     document.querySelector('.display').style.display = "block";
+    document.getElementById("display").style.display = "flex";
 }
+
+
+// read status function
+function readStatus(book) {
+    const id = parseInt(book.id);
+    book.onclick = function() {
+        if (myLibrary[id].status == "read") {
+            myLibrary[id].status = "unread";
+            book.style.backgroundColor = "gray";
+        } else {
+            myLibrary[id].status = "read";
+            book.style.backgroundColor = "green";
+        }
+        book.innerHTML = myLibrary[id].status;
+    }
+}
+
 
 // the display-book function
 function displayBooks() {
@@ -94,13 +140,27 @@ function displayBooks() {
         cardBody.appendChild(title);
 
         let content = document.createElement('p');
-        content.innerHTML = myLibrary[i].author + ', ' + myLibrary[i].pages + ' pages\n[' + myLibrary[i].status + ']';
+        content.innerHTML = myLibrary[i].author + ', ' + myLibrary[i].pages + ' pages';
         cardBody.appendChild(content);
+
+        // status button
+        let statusButton = document.createElement('button');
+        statusButton.setAttribute('type', 'button');
+        statusButton.setAttribute('class', 'status-button');
+        statusButton.setAttribute('id', i);
+        statusButton.innerHTML = myLibrary[i].status;
+        if (myLibrary[i].status == "unread") {
+           statusButton.style.backgroundColor = "gray";
+        } else {
+            statusButton.style.backgroundColor = "green";
+        }
+        cardBody.appendChild(statusButton);
 
         // delete button
         let del = document.createElement('button');
         del.setAttribute('type', 'button');
         del.setAttribute('class', 'del-book');
+        del.setAttribute('id', i); // associate DOM element with array id
         del.innerHTML = "Remove";
         cardBody.appendChild(del);
 
@@ -122,7 +182,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
         e.preventDefault();
         addBookToLibrary();
         document.getElementById("add-form").reset(); // reset the form
+        document.getElementById("display").style.display = "flex"; // do wrap property after adding new book
     });
+    document.querySelectorAll(".del-book").forEach(book => deleteBook(book)); // delete book function
+    document.querySelectorAll(".status-button").forEach(book => readStatus(book)); // read status function
 });
 
 
@@ -134,12 +197,5 @@ myLibrary.push(b1);
 const b2 = new Book("Romeo and Juliet", "William Shakespeare", 92, "unread");
 myLibrary.push(b2);
 
-const b4 = new Book("The Hobbit", "J. R. R. Tolkien", 310, "read");
-myLibrary.push(b4);
-
-const b3 = new Book("The Hobbit", "J. R. R. Tolkien", 310, "read");
+const b3 = new Book("Gone With The Wind", "Margaret Mitchell", 960, "read");
 myLibrary.push(b3);
-
-
-
-
